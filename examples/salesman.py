@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 import math
+import pickle
 import random
 from collections import defaultdict
 from simanneal import Annealer
-
+#%%
 
 def distance(a, b):
     """Calculates distance between two latitude-longitude coordinates."""
-    R = 3963  # radius of Earth (miles)
-    lat1, lon1 = math.radians(a[0]), math.radians(a[1])
-    lat2, lon2 = math.radians(b[0]), math.radians(b[1])
-    return math.acos(math.sin(lat1) * math.sin(lat2) +
-                     math.cos(lat1) * math.cos(lat2) * math.cos(lon1 - lon2)) * R
+    # R = 3963  # radius of Earth (miles)
+    # lat1, lon1 = math.radians(a[0]), math.radians(a[1])
+    # lat2, lon2 = math.radians(b[0]), math.radians(b[1])
+    # return math.acos(math.sin(lat1) * math.sin(lat2) +
+    #                  math.cos(lat1) * math.cos(lat2) * math.cos(lon1 - lon2)) * R
+    return math.sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
 
 
 class TravellingSalesmanProblem(Annealer):
@@ -85,6 +87,7 @@ if __name__ == '__main__':
     tsp.set_schedule(tsp.auto(minutes=0.2))
     # since our state is just a list, slice is the fastest way to copy
     tsp.copy_strategy = "slice"
+    # tsp.save_state_on_exit = True
     state, e = tsp.anneal()
 
     while state[0] != 'New York City':
@@ -93,3 +96,8 @@ if __name__ == '__main__':
     print()
     print("%i mile route:" % e)
     print(" ➞  ".join(state))
+#%%
+# csdddd = open('examples/.','rb')
+# csddd = pickle.load(csdddd)
+# csdddd.close()
+# print(csddd)
