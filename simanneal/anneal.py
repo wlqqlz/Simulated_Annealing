@@ -267,6 +267,12 @@ class Annealer(object):
                         improves += 1
                     prevState = self.copy_state(self.state)
                     prevEnergy = self.E
+                    if self.E < self.best_energy:
+                        self.best_state = self.copy_state(self.state)
+                        self.best_energy = self.E
+
+            self.state = self.copy_state(self.best_state)
+            self.E = self.best_energy
             return self.E, float(accepts) / steps_per_T, float(improves) / steps_per_T
 
         self.start = time.time()
@@ -274,6 +280,8 @@ class Annealer(object):
         # Find an initial guess for temperature
 
         self.E = self.energy()
+        self.best_energy = self.E
+        self.best_state = self.copy_state(self.state)
         T = 0.0
         step = 0
 
@@ -313,7 +321,7 @@ class Annealer(object):
             self.E, acceptance, improvement = run(T, steps_per_T)
             step += steps_per_T
             self.update(step, T, self.E, acceptance, improvement)
-        Tmin = round_figures(T / 3, 2)
+        Tmin = T
 
         # Calculate anneal duration
         elapsed = time.time() - self.start
