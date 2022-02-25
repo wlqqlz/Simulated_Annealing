@@ -4,7 +4,7 @@ import math
 import pickle
 import random
 from collections import defaultdict
-from simanneal import Annealer
+from Simulated_Annealing import Simulated_Annealing
 #%%
 
 def distance(a, b):
@@ -17,7 +17,7 @@ def distance(a, b):
     return math.sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
 
 
-class TravellingSalesmanProblem(Annealer):
+class TravellingSalesmanProblem(Simulated_Annealing):
 
     """Test annealer with a travelling salesman problem.
     """
